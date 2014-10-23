@@ -5,7 +5,7 @@ After=haveged.service
 
 [Service]
 Type=forking
-ExecStart=/usr/bin/sr-hostapd
+ExecStart=/usr/bin/sr-hostapd /tmp/mount/robot.zip
 
 [Install]
 WantedBy=multi-user.target
