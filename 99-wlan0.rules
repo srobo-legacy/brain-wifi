@@ -1,0 +1,2 @@
+# Start dnsmasq when this is ready
+SUBSYSTEM=="net", ACTION=="add", KERNEL="wlan0", ENV{SYSTEMD_WANTS}="wifi.target", TAG+="systemd"

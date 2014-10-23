@@ -1,0 +1,11 @@
+[Unit]
+Description=DNS caching server.
+After=network.target
+
+[Service]
+# Bring the interface up before we start dnsmasq
+ExecStartPre=/usr/sbin/ifconfig wlan0 192.168.5.1/24 up
+ExecStart=/usr/sbin/dnsmasq -k
+
+[Install]
+WantedBy=wifi.target

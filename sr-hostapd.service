@@ -2,6 +2,7 @@
 Description=SR's magically munged hostapd
 #More randomness is required for WPA
 After=haveged.service
+After=dnsmasq.service
 
 [Service]
 Type=forking
@@ -9,4 +10,4 @@ PIDFile=/run/hostapd.pid
 ExecStart=/usr/bin/sr-hostapd /tmp/mount/robot.zip
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=wifi.target
