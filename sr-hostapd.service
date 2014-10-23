@@ -5,6 +5,7 @@ After=haveged.service
 
 [Service]
 Type=forking
+PIDFile=/run/hostapd.pid
 ExecStart=/usr/bin/sr-hostapd /tmp/mount/robot.zip
 
 [Install]
