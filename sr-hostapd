@@ -1,0 +1,55 @@
+#!/usr/bin/env python
+import argparse
+import os
+import random
+import time
+import yaml
+import zipfile
+
+parser = argparse.ArgumentParser( description="Start hostapd with a config file from robot.zip" )
+parser.add_argument("zip", help="Zip file to extract wifi keys from")
+parser.add_argument("-f", "--foreground",
+                    action="store_true",
+                    help="Run in foreground")
+args = parser.parse_args()
+
+# Grab the wifi key from robot.zip
+with zipfile.ZipFile(args.zip, "r") as f:
+    conf = yaml.load(f.open("wifi.yaml", "r"))
+
+random.seed(time.time())
+channel = random.randint(1,14)
+
+# Write the hostapd config out
+with open("/run/hostapd.conf", "w") as f:
+    print >>f, """driver=rtl871xdrv
+ieee80211n=1
+hw_mode=g
+device_name=RTL8192CU
+manufacturer=Realtek
+
+interface=wlan0
+ssid={ssid}
+auth_algs=1
+wmm_enabled=0
+channel={channel}
+
+wpa=2
+wpa_passphrase={key}
+wpa_key_mgmt=WPA-PSK
+wpa_pairwise=TKIP CCMP
+""".format(key=conf["key"],
+           ssid=conf["ssid"],
+           channel=channel)
+
+# Now exec over to hostapd
+cmd = ["/usr/sbin/hostapd",
+       "/run/hostapd.conf",
+       "-P", "/run/hostapd.pid" ]
+
+if args.foreground:
+    cmd += ["-d"]
+else:
+    cmd += ["-B"]
+
+os.execv(cmd[0], cmd)

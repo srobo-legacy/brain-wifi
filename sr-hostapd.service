@@ -1,0 +1,11 @@
+[Unit]
+Description=SR's magically munged hostapd
+#More randomness is required for WPA
+After=haveged.service
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/sr-hostapd
+
+[Install]
+WantedBy=multi-user.target

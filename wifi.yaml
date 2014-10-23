@@ -1,0 +1,7 @@
+# This is an example wifi config file
+
+# The ssid to use
+ssid: "robot-ABC"
+
+# The wifi key
+key: "my magical wifi key"
